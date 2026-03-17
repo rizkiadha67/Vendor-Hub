@@ -1,0 +1,21 @@
+# WordPress .gitignore
+wp-config.php
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/backup-db/
+wp-content/cache/
+*.log
+.htaccess
+sitemap.xml
+sitemap.xml.gz
+vendor/
+node_modules/
+.env
+debug.log
+
+# OS generated files
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+.DS_Store

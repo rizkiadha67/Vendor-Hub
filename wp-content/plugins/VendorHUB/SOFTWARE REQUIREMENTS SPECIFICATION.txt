@@ -1,0 +1,444 @@
+SOFTWARE REQUIREMENTS SPECIFICATION (SRS)
+Sistem NiagaHUB – Platform Marketplace Vendor & Procurement
+1. Pendahuluan
+1.1 Tujuan
+
+Dokumen Software Requirements Specification (SRS) ini bertujuan untuk mendefinisikan secara rinci kebutuhan sistem NiagaHUB, yaitu sebuah platform marketplace B2B yang mempertemukan vendor penyedia produk atau jasa dengan perusahaan yang melakukan pengadaan (procurement/buyer).
+
+Dokumen ini berfungsi sebagai acuan bagi seluruh pihak yang terlibat dalam pengembangan sistem, termasuk:
+
+analis sistem
+
+pengembang perangkat lunak
+
+penguji sistem
+
+manajer proyek
+
+pemangku kepentingan (stakeholder)
+
+SRS ini menjelaskan kebutuhan sistem secara komprehensif, baik dari sisi kebutuhan fungsional, non-fungsional, maupun batasan sistem, sehingga proses perancangan, implementasi, dan pengujian dapat dilakukan secara sistematis.
+
+1.2 Ruang Lingkup Sistem
+
+NiagaHUB adalah platform digital yang memungkinkan perusahaan untuk menemukan vendor yang sesuai dengan kebutuhan pengadaan barang atau jasa melalui satu sistem terintegrasi.
+
+Fungsi utama sistem meliputi:
+
+direktori vendor nasional
+
+marketplace produk vendor
+
+marketplace jasa profesional
+
+sistem tender dan RFQ
+
+dashboard vendor
+
+dashboard buyer
+
+sistem manajemen vendor
+
+sistem membership vendor
+
+sistem verifikasi vendor
+
+Sistem ini dikembangkan sebagai plugin pada WordPress sehingga dapat terintegrasi dengan website berbasis WordPress.
+
+1.3 Definisi, Akronim, dan Singkatan
+Istilah	Definisi
+Vendor	Perusahaan atau individu yang menyediakan produk atau jasa
+Buyer	Perusahaan yang melakukan pengadaan
+RFQ	Request for Quotation, permintaan penawaran harga
+RFP	Request for Proposal
+Tender	Proses pemilihan vendor melalui kompetisi penawaran
+Marketplace	Platform digital yang mempertemukan penjual dan pembeli
+Dashboard	Halaman kontrol pengguna
+Vendor Verification	Proses validasi vendor oleh admin
+1.4 Referensi
+
+Referensi yang digunakan dalam penyusunan dokumen ini:
+
+Standar dokumentasi perangkat lunak IEEE – IEEE SRS Standard
+
+Dokumentasi pengembangan plugin WordPress
+
+Konsep sistem E-Procurement
+
+Konsep B2B Marketplace Platform
+
+2. Gambaran Umum Sistem
+2.1 Perspektif Sistem
+
+NiagaHUB merupakan sistem marketplace B2B yang menghubungkan vendor dan buyer dalam proses pengadaan barang atau jasa.
+
+Arsitektur sistem:
+
+User
+(Vendor / Buyer)
+       │
+Website NiagaHUB
+(WordPress)
+       │
+Plugin VendorHub
+       │
+Database
+2.2 Fungsi Sistem
+
+Sistem NiagaHUB menyediakan fungsi utama:
+
+Manajemen vendor
+
+Marketplace vendor
+
+Marketplace produk
+
+Marketplace jasa
+
+Sistem tender dan RFQ
+
+Dashboard vendor
+
+Dashboard buyer
+
+Sistem membership vendor
+
+Sistem verifikasi vendor
+
+Sistem rating vendor
+
+2.3 Karakteristik Pengguna
+Vendor
+
+Vendor adalah perusahaan atau individu yang menawarkan produk atau jasa.
+
+Aktivitas vendor:
+
+membuat profil vendor
+
+mengunggah produk
+
+mengunggah jasa
+
+mengikuti tender
+
+mengirim proposal
+
+Buyer
+
+Buyer adalah perusahaan yang melakukan pengadaan barang atau jasa.
+
+Aktivitas buyer:
+
+mencari vendor
+
+membuat RFQ
+
+membuat tender
+
+memilih vendor
+
+Admin
+
+Admin adalah pengelola sistem.
+
+Aktivitas admin:
+
+verifikasi vendor
+
+moderasi tender
+
+mengelola kategori
+
+mengelola membership
+
+2.4 Batasan Sistem
+
+Batasan sistem NiagaHUB:
+
+sistem berbasis web
+
+membutuhkan koneksi internet
+
+pengguna harus melakukan registrasi
+
+2.5 Asumsi dan Ketergantungan
+
+Sistem bergantung pada:
+
+server hosting
+
+sistem WordPress
+
+database server
+
+koneksi internet
+
+3. Kebutuhan Fungsional
+3.1 Registrasi Pengguna
+
+Pengguna dapat melakukan registrasi sebagai:
+
+Vendor
+
+Buyer
+
+Data yang diinput:
+
+nama perusahaan
+
+email
+
+password
+
+kategori bisnis
+
+3.2 Login Sistem
+
+Pengguna dapat masuk ke sistem menggunakan akun yang telah terdaftar.
+
+Proses:
+
+input email
+
+input password
+
+verifikasi sistem
+
+3.3 Manajemen Profil Vendor
+
+Vendor dapat mengelola informasi perusahaan.
+
+Data yang disimpan:
+
+nama perusahaan
+
+alamat
+
+kategori industri
+
+portofolio
+
+sertifikasi
+
+3.4 Marketplace Vendor
+
+Sistem menampilkan direktori vendor yang dapat dicari berdasarkan:
+
+industri
+
+kota
+
+kategori jasa
+
+3.5 Marketplace Produk
+
+Vendor dapat mengunggah produk yang mereka jual.
+
+Data produk:
+
+nama produk
+
+kategori produk
+
+deskripsi produk
+
+harga
+
+3.6 Marketplace Jasa
+
+Vendor dapat menawarkan layanan profesional.
+
+Contoh jasa:
+
+software development
+
+konsultan bisnis
+
+konsultan IT
+
+3.7 Sistem RFQ
+
+Buyer dapat meminta penawaran harga kepada vendor.
+
+Proses:
+
+buyer membuat RFQ
+
+vendor menerima notifikasi
+
+vendor mengirim penawaran
+
+3.8 Sistem Tender
+
+Buyer dapat membuat tender proyek.
+
+Proses:
+
+buyer membuat tender
+
+vendor mengirim proposal
+
+buyer memilih vendor
+
+3.9 Vendor Membership
+
+Vendor dapat memilih paket membership:
+
+Free
+
+Basic
+
+Professional
+
+Premium
+
+3.10 Vendor Verification
+
+Admin dapat melakukan verifikasi vendor untuk memastikan keaslian perusahaan.
+
+3.11 Sistem Rating Vendor
+
+Buyer dapat memberikan rating dan ulasan kepada vendor setelah proyek selesai.
+
+4. Kebutuhan Non-Fungsional
+4.1 Kinerja Sistem
+
+Sistem harus mampu menangani minimal:
+
+1000 vendor
+
+500 buyer aktif
+
+4.2 Keamanan Sistem
+
+Sistem harus menyediakan:
+
+autentikasi pengguna
+
+enkripsi password
+
+validasi input
+
+4.3 Ketersediaan Sistem
+
+Sistem harus memiliki uptime minimal 99%.
+
+4.4 Usability
+
+Sistem harus memiliki antarmuka yang mudah digunakan oleh pengguna non-teknis.
+
+5. Model Data Konseptual
+
+Entitas utama sistem:
+
+User
+
+Vendor
+
+Product
+
+Service
+
+Tender
+
+RFQ
+
+Proposal
+
+Membership
+
+Review
+
+Relasi utama:
+
+Vendor
+  │
+  ├── Product
+  ├── Service
+  └── Proposal
+        │
+       Tender
+        │
+       Buyer
+6. Use Case Sistem
+
+Use case utama sistem:
+
+Registrasi vendor
+
+Registrasi buyer
+
+Vendor membuat profil
+
+Vendor upload produk
+
+Vendor upload jasa
+
+Buyer mencari vendor
+
+Buyer membuat RFQ
+
+Vendor mengirim penawaran
+
+Buyer membuat tender
+
+Vendor mengikuti tender
+
+Buyer memilih vendor
+
+Buyer memberi rating vendor
+
+7. Antarmuka Sistem
+
+Sistem menyediakan beberapa halaman utama:
+
+Home
+
+Marketplace Vendor
+
+Marketplace Produk
+
+Marketplace Jasa
+
+Tender & RFQ
+
+Vendor Dashboard
+
+Buyer Dashboard
+
+8. Teknologi Sistem
+
+Teknologi yang digunakan:
+
+Frontend
+
+HTML
+
+CSS
+
+JavaScript
+
+Backend
+
+PHP
+
+CMS
+
+WordPress
+
+Database
+
+MySQL / MariaDB
+
+9. Fitur Utama NiagaHUB
+Fitur	Fungsi
+Vendor Marketplace	Direktori vendor nasional
+RFQ System	Buyer meminta penawaran
+Tender System	Vendor mengikuti tender
+Vendor Verification	Validasi vendor
+Multi Vendor	Banyak vendor dalam satu platform
+Procurement Dashboard	Manajemen vendor
+
+✅ Dengan dokumen ini kamu sudah punya SRS lengkap untuk platform NiagaHUB.
+
