@@ -163,6 +163,16 @@ get_header(); ?>
                         <input type="password" name="pwd" required style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px;">
                     </div>
                     <button type="submit" class="vh-btn vh-btn-primary" style="width: 100%; padding: 12px;"><?php _e('Masuk Sekarang', 'niagahub-theme'); ?></button>
+
+                    <div style="text-align: center; margin: 1.5rem 0; position: relative;">
+                        <hr style="border: none; border-top: 1px solid #e2e8f0;">
+                        <span style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: white; padding: 0 10px; color: #94a3b8; font-size: 12px;"><?php _e('ATAU', 'niagahub-theme'); ?></span>
+                    </div>
+
+                    <a href="<?php echo esc_url(add_query_arg('vh_google_login', '1', home_url('/auth/'))); ?>" class="vh-btn" style="width: 100%; padding: 11px; display: flex; align-items: center; justify-content: center; gap: 10px; background: white; border: 1px solid #cbd5e1; color: #334155; text-decoration: none;">
+                        <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" style="width: 18px; height: 18px;">
+                        <?php _e('Masuk dengan Google', 'niagahub-theme'); ?>
+                    </a>
                 </form>
 
                 <!-- Register Form (Hidden by default) -->
@@ -200,7 +210,21 @@ get_header(); ?>
                             </label>
                         </div>
                     </div>
+                    <div style="margin-bottom: 1.5rem;">
+                        <label style="display: block; font-weight: 600; margin-bottom: 0.5rem;"><?php _e('Password', 'niagahub-theme'); ?></label>
+                        <input type="password" name="user_pass" required minlength="6" style="width: 100%; padding: 12px; border: 1px solid #cbd5e1; border-radius: 8px;" placeholder="Minimal 6 karakter">
+                    </div>
                     <button type="submit" class="vh-btn vh-btn-action" style="width: 100%; padding: 12px;"><?php _e('Buat Akun Baru', 'niagahub-theme'); ?></button>
+
+                    <div style="text-align: center; margin: 1.5rem 0; position: relative;">
+                        <hr style="border: none; border-top: 1px solid #e2e8f0;">
+                        <span style="position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: white; padding: 0 10px; color: #94a3b8; font-size: 12px;"><?php _e('ATAU', 'niagahub-theme'); ?></span>
+                    </div>
+
+                    <a href="<?php echo esc_url(add_query_arg('vh_google_login', '1', home_url('/auth/'))); ?>" class="vh-btn" style="width: 100%; padding: 11px; display: flex; align-items: center; justify-content: center; gap: 10px; background: white; border: 1px solid #cbd5e1; color: #334155; text-decoration: none;">
+                        <img src="https://www.gstatic.com/images/branding/product/1x/gsa_512dp.png" style="width: 18px; height: 18px;">
+                        <?php _e('Daftar dengan Google', 'niagahub-theme'); ?>
+                    </a>
                 </form>
             </div>
         </div>

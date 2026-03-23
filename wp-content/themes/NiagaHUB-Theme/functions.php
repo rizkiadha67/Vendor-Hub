@@ -20,6 +20,15 @@ function niagahub_theme_scripts() {
     wp_enqueue_style( 'dashicons' );
     wp_enqueue_style( 'niagahub-google-fonts', 'https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap', array(), null );
     wp_enqueue_style( 'niagahub-main-style', get_stylesheet_uri(), array(), time() );
+
+    // Midtrans Snap JS
+    $midtrans_mode = get_option('vh_midtrans_mode', 'sandbox');
+    $snap_url = ($midtrans_mode === 'production') 
+        ? 'https://app.midtrans.com/snap/snap.js' 
+        : 'https://app.sandbox.midtrans.com/snap/snap.js';
+    
+    wp_enqueue_script( 'midtrans-snap', $snap_url, array(), null, true );
+    wp_add_inline_script( 'midtrans-snap', 'if(typeof window.snap === "undefined") { console.warn("Snap JS failed to load"); }', 'after' );
 }
 add_action( 'wp_enqueue_scripts', 'niagahub_theme_scripts' );
 
@@ -115,5 +124,151 @@ function vh_get_industry_bg( $slug ) {
     );
     return isset($bgs[$slug]) ? $bgs[$slug] : $bgs['default'];
 }
+
+/**
+ * Security: Hide WordPress Version & Identifiers (Hide WP Detector)
+ */
+remove_action('wp_head', 'wp_generator');
+add_filter('the_generator', '__return_empty_string');
+
+// Remove version from scripts and styles
+function vh_remove_wp_version_strings( $src ) {
+    global $wp_version;
+    parse_str(parse_url($src, PHP_URL_QUERY), $query);
+    if ( !empty($query['ver']) && $query['ver'] === $wp_version ) {
+        $src = remove_query_arg('ver', $src);
+    }
+    return $src;
+}
+add_filter( 'script_loader_src', 'vh_remove_wp_version_strings' );
+add_filter( 'style_loader_src', 'vh_remove_wp_version_strings' );
+
+// Remove Emoji Support
+remove_action('wp_head', 'print_emoji_detection_script', 7);
+remove_action('wp_print_styles', 'print_emoji_styles');
+
+/**
+ * Global SEO & Social Media Meta Tags
+ */
+function vh_header_seo_tags() {
+    $site_name = get_bloginfo('name');
+    
+    if (is_singular('vh_product')) {
+        $price = get_post_meta(get_the_ID(), '_vh_price', true);
+        $desc = get_the_excerpt();
+        $img = get_the_post_thumbnail_url(get_the_ID(), 'large');
+        
+        echo '<meta name="description" content="'.esc_attr($desc).'">';
+        echo '<meta property="og:type" content="product">';
+        echo '<meta property="og:price:amount" content="'.esc_attr($price).'">';
+        echo '<meta property="og:price:currency" content="IDR">';
+        if ($img) echo '<meta property="og:image" content="'.esc_url($img).'">';
+        
+        // Twitter Card
+        echo '<meta name="twitter:card" content="summary_large_image">';
+        echo '<meta name="twitter:title" content="'.esc_attr(get_the_title()).'">';
+        echo '<meta name="twitter:description" content="'.esc_attr($desc).'">';
+        if ($img) echo '<meta name="twitter:image" content="'.esc_url($img).'">';
+
+    } elseif (is_singular('vh_tender')) {
+        $desc = 'Informasi Tender: ' . get_the_title();
+        echo '<meta name="description" content="'.esc_attr($desc).'">';
+        echo '<meta property="og:type" content="article">';
+        echo '<meta name="twitter:card" content="summary">';
+        echo '<meta name="twitter:title" content="'.esc_attr(get_the_title()).'">';
+        echo '<meta name="twitter:description" content="'.esc_attr($desc).'">';
+
+    } elseif (is_author()) {
+        $vendor_id = get_queried_object_id();
+        $name = get_user_meta($vendor_id, 'vh_company_name', true) ?: get_the_author_meta('display_name', $vendor_id);
+        $desc = get_the_author_meta('description', $vendor_id) ?: 'Profil Vendor di ' . $site_name;
+        echo '<meta name="description" content="'.esc_attr($desc).'">';
+        echo '<meta property="og:title" content="'.esc_attr($name).' - NiagaHUB Vendor">';
+
+    } elseif (is_tax('vh_industry')) {
+        $term = get_queried_object();
+        $desc = 'Daftar produk dan vendor di kategori ' . $term->name . ' - ' . $site_name;
+        echo '<meta name="description" content="'.esc_attr($desc).'">';
+    }
+}
+add_action('wp_head', 'vh_header_seo_tags');
+
+/**
+ * Manage Search Engine Indexing (Robots)
+ */
+function vh_robots_meta_tags() {
+    // Noindex sensitive pages
+    if (is_page('dashboard') || is_page('auth') || is_search() || is_404()) {
+        echo '<meta name="robots" content="noindex, nofollow">';
+    }
+}
+add_action('wp_head', 'vh_robots_meta_tags');
+
+/**
+ * Enhanced JSON-LD Schema (Product, LocalBusiness, Breadcrumbs)
+ */
+function vh_add_json_ld_schema() {
+    $schemas = [];
+
+    // 1. Breadcrumb Schema
+    if (!is_front_page()) {
+        $items = [
+            ["@type" => "ListItem", "position" => 1, "name" => "Beranda", "item" => home_url('/')]
+        ];
+
+        if (is_singular(['vh_product', 'vh_tender', 'post'])) {
+            $items[] = ["@type" => "ListItem", "position" => 2, "name" => get_the_title(), "item" => get_permalink()];
+        } elseif (is_tax('vh_industry')) {
+            $term = get_queried_object();
+            $items[] = ["@type" => "ListItem", "position" => 2, "name" => $term->name, "item" => get_term_link($term)];
+        } elseif (is_author()) {
+            $vendor_id = get_queried_object_id();
+            $name = get_user_meta($vendor_id, 'vh_company_name', true) ?: get_the_author_meta('display_name', $vendor_id);
+            $items[] = ["@type" => "ListItem", "position" => 2, "name" => $name, "item" => get_author_posts_url($vendor_id)];
+        }
+
+        $schemas[] = [
+            "@context" => "https://schema.org",
+            "@type" => "BreadcrumbList",
+            "itemListElement" => $items
+        ];
+    }
+
+    // 2. Main Entity Schema
+    if (is_singular('vh_product')) {
+        $schemas[] = [
+            "@context" => "https://schema.org/",
+            "@type" => "Product",
+            "name" => get_the_title(),
+            "description" => get_the_excerpt(),
+            "image" => get_the_post_thumbnail_url(),
+            "offers" => [
+                "@type" => "Offer",
+                "priceCurrency" => "IDR",
+                "price" => get_post_meta(get_the_ID(), '_vh_price', true),
+                "availability" => "https://schema.org/InStock"
+            ]
+        ];
+    } elseif (is_author()) {
+        $vendor_id = get_queried_object_id();
+        $schemas[] = [
+            "@context" => "https://schema.org/",
+            "@type" => "LocalBusiness",
+            "name" => get_user_meta($vendor_id, 'vh_company_name', true) ?: get_the_author_meta('display_name', $vendor_id),
+            "description" => get_the_author_meta('description', $vendor_id),
+            "address" => [
+                "@type" => "PostalAddress",
+                "addressLocality" => get_user_meta($vendor_id, 'vh_location', true)
+            ]
+        ];
+    }
+
+    if (!empty($schemas)) {
+        foreach ($schemas as $s) {
+            echo '<script type="application/ld+json">' . json_encode($s) . '</script>' . "\n";
+        }
+    }
+}
+add_action('wp_head', 'vh_add_json_ld_schema');
 
 // Setup is now handled by the NiagaHUB Plugin Seeder for better portability.

@@ -31,15 +31,22 @@ class VH_Auth {
         $username = sanitize_user( $_POST['user_login'] );
         $email    = sanitize_email( $_POST['user_email'] );
         $role     = sanitize_text_field( $_POST['user_role'] );
-        $password = wp_generate_password();
+        $password = isset( $_POST['user_pass'] ) ? $_POST['user_pass'] : '';
 
-        if ( empty( $username ) || empty( $email ) ) {
-            wp_send_json_error( __( 'Please fill in all required fields.', 'vendorhub' ) );
+        if ( empty( $username ) || empty( $email ) || empty( $password ) ) {
+            wp_send_json_error( __( 'Semua field wajib diisi.', 'vendorhub' ) );
         }
 
+        if ( strlen( $password ) < 6 ) {
+            wp_send_json_error( __( 'Password minimal 6 karakter.', 'vendorhub' ) );
+        }
 
         if ( email_exists( $email ) ) {
-            wp_send_json_error( __( 'This email is already registered.', 'vendorhub' ) );
+            wp_send_json_error( __( 'Email ini sudah terdaftar.', 'vendorhub' ) );
+        }
+
+        if ( username_exists( $username ) ) {
+            wp_send_json_error( __( 'Username ini sudah dipakai.', 'vendorhub' ) );
         }
 
         $user_id = wp_create_user( $username, $password, $email );
@@ -48,11 +55,9 @@ class VH_Auth {
             wp_send_json_error( $user_id->get_error_message() );
         }
 
-        // Set User Role
         $user = new WP_User( $user_id );
         $user->set_role( $role );
 
-        // Save Metadata
         if ( isset( $_POST['vh_company_name'] ) ) {
             update_user_meta( $user_id, 'vh_company_name', sanitize_text_field( $_POST['vh_company_name'] ) );
         }
@@ -61,15 +66,12 @@ class VH_Auth {
         }
         update_user_meta( $user_id, 'vh_role', $role );
 
-        // Send Email with Password
-        wp_new_user_notification( $user_id, null, 'both' );
-
-        // Auto Login after registration
+        // Auto Login
         wp_set_current_user( $user_id );
         wp_set_auth_cookie( $user_id );
 
         wp_send_json_success( array(
-            'message' => __( 'Registration successful! Redirecting...', 'vendorhub' ),
+            'message'  => __( 'Akun berhasil dibuat! Mengalihkan...', 'vendorhub' ),
             'redirect' => site_url( '/dashboard' )
         ) );
     }

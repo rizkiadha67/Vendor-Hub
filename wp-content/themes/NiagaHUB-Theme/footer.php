@@ -17,30 +17,30 @@
                 <div class="nh-footer-col">
                     <h4><?php _e('Solusi Vendor', 'niagahub-theme'); ?></h4>
                     <ul class="nh-footer-links">
-                        <li><a href="#"><?php _e('Direktori Vendor', 'niagahub-theme'); ?></a></li>
-                        <li><a href="#"><?php _e('Marketplace Jasa', 'niagahub-theme'); ?></a></li>
-                        <li><a href="#"><?php _e('Verifikasi Vendor', 'niagahub-theme'); ?></a></li>
-                        <li><a href="#"><?php _e('Paket Membership', 'niagahub-theme'); ?></a></li>
+                        <li><a href="<?php echo home_url('/vendor/'); ?>"><?php _e('Direktori Vendor', 'niagahub-theme'); ?></a></li>
+                        <li><a href="<?php echo home_url('/produk/'); ?>"><?php _e('Marketplace Jasa', 'niagahub-theme'); ?></a></li>
+                        <li><a href="<?php echo home_url('/dashboard/?tab=adm-vendors'); ?>"><?php _e('Verifikasi Vendor', 'niagahub-theme'); ?></a></li>
+                        <li><a href="<?php echo home_url('/dashboard/?tab=settings'); ?>"><?php _e('Paket Membership', 'niagahub-theme'); ?></a></li>
                     </ul>
                 </div>
 
                 <div class="nh-footer-col">
                     <h4><?php _e('Solusi Buyer', 'niagahub-theme'); ?></h4>
                     <ul class="nh-footer-links">
-                        <li><a href="#"><?php _e('Pusat Tender', 'niagahub-theme'); ?></a></li>
-                        <li><a href="#"><?php _e('Sistem RFQ', 'niagahub-theme'); ?></a></li>
-                        <li><a href="#"><?php _e('Manajemen Vendor', 'niagahub-theme'); ?></a></li>
-                        <li><a href="#"><?php _e('Laporan Pengadaan', 'niagahub-theme'); ?></a></li>
+                        <li><a href="<?php echo home_url('/tender/'); ?>"><?php _e('Pusat Tender', 'niagahub-theme'); ?></a></li>
+                        <li><a href="<?php echo home_url('/minta-penawaran/'); ?>"><?php _e('Sistem RFQ', 'niagahub-theme'); ?></a></li>
+                        <li><a href="<?php echo home_url('/dashboard/'); ?>"><?php _e('Manajemen Vendor', 'niagahub-theme'); ?></a></li>
+                        <li><a href="<?php echo home_url('/dashboard/'); ?>"><?php _e('Laporan Pengadaan', 'niagahub-theme'); ?></a></li>
                     </ul>
                 </div>
 
                 <div class="nh-footer-col">
                     <h4><?php _e('Bantuan & Kontak', 'niagahub-theme'); ?></h4>
                     <ul class="nh-footer-links">
-                        <li><a href="#"><?php _e('Cara Kerja', 'niagahub-theme'); ?></a></li>
-                        <li><a href="#"><?php _e('Pusat Bantuan', 'niagahub-theme'); ?></a></li>
-                        <li><a href="#"><?php _e('Kebijakan Privasi', 'niagahub-theme'); ?></a></li>
-                        <li><a href="#"><?php _e('Kontak Kami', 'niagahub-theme'); ?></a></li>
+                        <li><a href="<?php echo home_url('/#cara-kerja'); ?>"><?php _e('Cara Kerja', 'niagahub-theme'); ?></a></li>
+                        <li><a href="<?php echo home_url('/pusat-bantuan/'); ?>"><?php _e('Pusat Bantuan', 'niagahub-theme'); ?></a></li>
+                        <li><a href="<?php echo home_url('/kebijakan-privasi/'); ?>"><?php _e('Kebijakan Privasi', 'niagahub-theme'); ?></a></li>
+                        <li><a href="<?php echo home_url('/#kontak'); ?>"><?php _e('Kontak Kami', 'niagahub-theme'); ?></a></li>
                     </ul>
                 </div>
             </div>

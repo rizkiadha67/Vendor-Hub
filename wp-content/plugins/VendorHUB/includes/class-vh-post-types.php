@@ -85,6 +85,45 @@ class VH_Post_Types {
             'supports' => array( 'title', 'editor', 'author' ),
             'show_in_rest' => true,
         ) );
+
+        // Proposal (Vendor kirim ke Tender)
+        register_post_type( 'vh_proposal', array(
+            'labels' => array(
+                'name'          => __( 'Proposals', 'vendorhub' ),
+                'singular_name' => __( 'Proposal', 'vendorhub' ),
+            ),
+            'public'      => false,
+            'show_ui'     => true,
+            'menu_icon'   => 'dashicons-portfolio',
+            'supports'    => array( 'title', 'editor', 'author' ),
+            'show_in_rest'=> false,
+        ) );
+
+        // Review (Buyer rating Vendor)
+        register_post_type( 'vh_review', array(
+            'labels' => array(
+                'name'          => __( 'Reviews', 'vendorhub' ),
+                'singular_name' => __( 'Review', 'vendorhub' ),
+            ),
+            'public'   => false,
+            'show_ui'  => true,
+            'menu_icon'=> 'dashicons-star-filled',
+            'supports' => array( 'title', 'editor', 'author' ),
+        ) );
+
+        // Ads (Banners for Home/Marketplace)
+        register_post_type( 'vh_ad', array(
+            'labels' => array(
+                'name'          => __( 'Iklan & Banner', 'vendorhub' ),
+                'singular_name' => __( 'Iklan', 'vendorhub' ),
+                'add_new_item'  => __( 'Tambah Iklan Baru', 'vendorhub' ),
+            ),
+            'public'      => true,
+            'show_ui'     => true,
+            'menu_icon'   => 'dashicons-megaphone',
+            'supports'    => array( 'title', 'thumbnail', 'excerpt', 'author' ),
+            'show_in_rest'=> true,
+        ) );
     }
 }
 

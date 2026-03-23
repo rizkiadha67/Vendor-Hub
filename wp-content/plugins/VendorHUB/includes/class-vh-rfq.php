@@ -23,6 +23,11 @@ class VH_RFQ_System {
         if ( ! is_user_logged_in() ) {
             return '<div class="vh-container"><p>' . __( 'Please login as a Buyer to request a quote.', 'vendorhub' ) . '</p></div>';
         }
+        $product_id = isset($_GET['rfq_product_id']) ? absint($_GET['rfq_product_id']) : 0;
+        $subject_val = '';
+        if ($product_id) {
+            $subject_val = 'Tanya Produk: ' . get_the_title($product_id);
+        }
 
         ob_start();
         ?>
@@ -31,15 +36,31 @@ class VH_RFQ_System {
             <p class="text-muted"><?php _e( 'Beritahu kami apa yang Anda butuhkan, dan vendor kami akan memberikan penawaran terbaik.', 'vendorhub' ); ?></p>
             
             <form id="vh-rfq-form" method="POST">
+                <input type="hidden" name="rfq_product_id" value="<?php echo $product_id; ?>">
                 <div class="vh-form-group" style="margin-bottom:1rem;">
                     <label><?php _e( 'Apa yang Anda cari?', 'vendorhub' ); ?></label>
-                    <input type="text" name="rfq_subject" required style="width:100%; padding:0.75rem; border-radius:8px; border:1px solid var(--vh-border);" placeholder="Contoh: Laptop Office 20 Unit">
+                    <input type="text" name="rfq_subject" required style="width:100%; padding:0.75rem; border-radius:8px; border:1px solid var(--vh-border);" placeholder="Contoh: Laptop Office 20 Unit" value="<?php echo esc_attr($subject_val); ?>">
                 </div>
                 
                 <div class="vh-form-group" style="margin-bottom:1rem;">
                     <label><?php _e( 'Detail Kebutuhan', 'vendorhub' ); ?></label>
                     <textarea name="rfq_details" required style="width:100%; padding:0.75rem; border-radius:8px; border:1px solid var(--vh-border); min-height:120px;" placeholder="Sebutkan spesifikasi, jumlah, dan deadline..."></textarea>
                 </div>
+
+                <?php if (!$product_id): ?>
+                <div class="vh-form-group" style="margin-bottom:1rem;">
+                    <label><?php _e( 'Pilih Produk yang Ingin Ditanyakan *', 'vendorhub' ); ?></label>
+                    <select name="rfq_product_id" required style="width:100%; padding:0.75rem; border-radius:8px; border:1px solid var(--vh-border);">
+                        <option value=""><?php _e('-- Pilih Produk --', 'vendorhub'); ?></option>
+                        <?php
+                        $products = get_posts(['post_type'=>'vh_product', 'posts_per_page'=>100]);
+                        foreach($products as $p) {
+                            echo '<option value="'.$p->ID.'">'.esc_html($p->post_title).'</option>';
+                        }
+                        ?>
+                    </select>
+                </div>
+                <?php endif; ?>
 
                 <div class="vh-grid" style="grid-template-columns: 1fr 1fr; margin-bottom:1rem;">
                     <div class="vh-form-group">
@@ -97,14 +118,27 @@ class VH_RFQ_System {
         $budget = sanitize_text_field( $_POST['rfq_budget'] );
         $quantity = sanitize_text_field( $_POST['rfq_quantity'] );
 
+        $prod_id  = isset($_POST['rfq_product_id']) ? absint($_POST['rfq_product_id']) : 0;
+
+        if ( !$prod_id ) {
+            wp_send_json_error( __( 'Silakan pilih produk terlebih dahulu.', 'vendorhub' ) );
+        }
+
         $post_id = wp_insert_post( array(
             'post_title'   => $subject,
             'post_content' => $details,
             'post_status'  => 'publish',
             'post_type'    => 'vh_rfq',
+            'post_author'  => get_current_user_id()
         ) );
 
         if ( $post_id ) {
+            $prod_id = isset($_POST['rfq_product_id']) ? absint($_POST['rfq_product_id']) : 0;
+            if ($prod_id) {
+                update_post_meta( $post_id, '_vh_rfq_product_id', $prod_id );
+                $vendor_id = get_post_field( 'post_author', $prod_id );
+                update_post_meta( $post_id, '_vh_rfq_vendor_id', $vendor_id );
+            }
             update_post_meta( $post_id, '_vh_rfq_budget', $budget );
             update_post_meta( $post_id, '_vh_rfq_quantity', $quantity );
             wp_send_json_success( __( 'Permintaan Anda telah berhasil dikirim! Vendor akan segera menghubungi Anda.', 'vendorhub' ) );

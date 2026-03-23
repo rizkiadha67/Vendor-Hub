@@ -67,9 +67,14 @@ if ($logo_id) {
         <div class="vendor-profile-content">
             <section style="margin-bottom: 4rem;">
                 <h2 style="border-bottom: 3px solid var(--primary-color); display: inline-block; padding-bottom: 5px; margin-bottom: 2rem;"><?php _e('Tentang Perusahaan', 'niagahub-theme'); ?></h2>
-                <div style="font-size: 1.15rem; line-height: 1.8; color: #475569;">
+                <div style="font-size: 1.15rem; line-height: 1.8; color: #475569; margin-bottom: 3rem;">
                     <?php echo wpautop($description); ?>
                 </div>
+
+                <?php if (class_exists('VH_Rating')): ?>
+                    <h2 style="border-bottom: 3px solid var(--primary-color); display: inline-block; padding-bottom: 5px; margin-bottom: 1rem;"><?php _e('Ulasan Pembeli', 'niagahub-theme'); ?></h2>
+                    <?php echo VH_Rating::render_reviews(['user_id' => $vendor_id]); ?>
+                <?php endif; ?>
             </section>
 
             <section>
@@ -156,9 +161,19 @@ if ($logo_id) {
             
             <div class="vh-card" style="margin-top: 2rem; text-align: center;">
                 <h3 style="font-size: 1.1rem; margin-top: 0;"><?php _e('Rating & Ulasan', 'niagahub-theme'); ?></h3>
-                <div style="font-size: 3rem; font-weight: 800; color: var(--vh-primary); margin: 10px 0;">4.9</div>
-                <div style="color: #fbbf24; font-size: 1.5rem; margin-bottom: 10px;">★★★★★</div>
-                <p class="text-muted" style="font-size: 13px;"><?php _e('Berdasarkan 120+ transaksi sukses', 'niagahub-theme'); ?></p>
+                <?php 
+                if (class_exists('VH_Rating')):
+                    $avg = VH_Rating::get_average_rating($vendor_id);
+                    $count = VH_Rating::get_review_count($vendor_id);
+                    if ($avg):
+                ?>
+                    <div style="font-size: 3rem; font-weight: 800; color: var(--vh-primary); margin: 10px 0;"><?php echo $avg; ?></div>
+                    <div style="color: #fbbf24; font-size: 1.5rem; margin-bottom: 10px;"><?php echo VH_Rating::render_stars($avg); ?></div>
+                    <p class="text-muted" style="font-size: 13px;"><?php printf(__('Berdasarkan %s ulasan', 'niagahub-theme'), $count); ?></p>
+                <?php else: ?>
+                    <div style="font-size: 3rem; font-weight: 800; color: #cbd5e1; margin: 10px 0;">—</div>
+                    <p class="text-muted" style="font-size: 13px;"><?php _e('Belum ada ulasan', 'niagahub-theme'); ?></p>
+                <?php endif; endif; ?>
             </div>
         </aside>
     </div>

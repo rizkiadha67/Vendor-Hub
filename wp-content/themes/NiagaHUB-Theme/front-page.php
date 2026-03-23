@@ -122,16 +122,17 @@
                     .nh-industry-card-new {
                         flex: 0 0 calc(25% - 1.25rem);
                         min-width: 260px;
-                        height: 320px;
                         border-radius: 20px;
                         overflow: hidden;
                         position: relative;
                         scroll-snap-align: start;
                         text-decoration: none;
                         transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                        /* 16:9 aspect ratio */
+                        aspect-ratio: 16 / 9;
                     }
-                    .nh-industry-card-new:hover { transform: translateY(-10px); }
-                    .nh-industry-card-new img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; }
+                    .nh-industry-card-new:hover { transform: translateY(-8px) scale(1.01); }
+                    .nh-industry-card-new img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s; position: absolute; inset: 0; }
                     .nh-industry-card-new:hover img { transform: scale(1.1); }
                     .nh-industry-overlay {
                         position: absolute;
@@ -140,15 +141,15 @@
                         display: flex;
                         flex-direction: column;
                         justify-content: flex-end;
-                        padding: 2rem;
+                        padding: 1.5rem;
                         color: white;
                     }
-                    .nh-industry-overlay h4 { color: white; margin: 0; font-size: 1.25rem; font-weight: 700; line-height: 1.2; }
-                    .nh-industry-overlay .industry-count { font-size: 13px; opacity: 0.8; margin-bottom: 8px; font-weight: 500; }
+                    .nh-industry-overlay h4 { color: white; margin: 0; font-size: 1.1rem; font-weight: 700; line-height: 1.2; }
+                    .nh-industry-overlay .industry-count { font-size: 12px; opacity: 0.8; margin-bottom: 6px; font-weight: 500; background: rgba(255,255,255,0.15); display: inline-block; padding: 2px 8px; border-radius: 20px; }
                     
                     @media (max-width: 1024px) { .nh-industry-card-new { flex: 0 0 calc(33.333% - 1rem); } }
-                    @media (max-width: 768px) { .nh-industry-card-new { flex: 0 0 calc(50% - 0.75rem); min-width: 220px; } }
-                    @media (max-width: 480px) { .nh-industry-card-new { flex: 0 0 85%; } }
+                    @media (max-width: 768px) { .nh-industry-card-new { flex: 0 0 calc(50% - 0.75rem); min-width: 200px; } }
+                    @media (max-width: 480px) { .nh-industry-card-new { flex: 0 0 80%; } }
                 </style>
                 
                 <?php

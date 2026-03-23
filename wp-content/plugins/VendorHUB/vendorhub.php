@@ -35,6 +35,16 @@ class VendorHub {
 	public function __construct() {
 		$this->includes();
 		$this->init_hooks();
+
+        // Initialize core components
+        if ( class_exists( 'VH_Admin_Manager' ) ) { VH_Admin_Manager::init(); }
+        if ( class_exists( 'VH_Proposal_Manager' ) ) { VH_Proposal_Manager::init(); }
+        if ( class_exists( 'VH_Post_Types' ) ) { VH_Post_Types::init(); }
+        if ( class_exists( 'VH_Rating' ) ) { VH_Rating::init(); }
+        if ( class_exists( 'VH_Notifications' ) ) { VH_Notifications::init(); }
+        if ( class_exists( 'VH_Google_Auth' ) ) { VH_Google_Auth::init(); }
+        if ( class_exists( 'VH_Payment' ) ) { VH_Payment::init(); }
+        if ( class_exists( 'VH_Email' ) ) { VH_Email::init(); }
 	}
 
 	/**
@@ -60,6 +70,15 @@ class VendorHub {
 		require_once VENDORHUB_PATH . 'includes/class-vh-importer.php';
 		require_once VENDORHUB_PATH . 'includes/class-vh-seeder.php';
 		require_once VENDORHUB_PATH . 'includes/class-vh-vendor-dashboard.php';
+		// New features
+		require_once VENDORHUB_PATH . 'includes/class-vh-proposal.php';
+		require_once VENDORHUB_PATH . 'includes/class-vh-membership.php';
+		require_once VENDORHUB_PATH . 'includes/class-vh-rating.php';
+		require_once VENDORHUB_PATH . 'includes/class-vh-payment.php';
+		require_once VENDORHUB_PATH . 'includes/class-vh-notifications.php';
+		require_once VENDORHUB_PATH . 'includes/class-vh-admin-manager.php';
+		require_once VENDORHUB_PATH . 'includes/class-vh-google-auth.php';
+		require_once VENDORHUB_PATH . 'includes/class-vh-email.php';
 	}
 
 	/**
@@ -120,6 +139,11 @@ class VendorHub {
 			'publish_posts' => true,
 			'upload_files' => true,
 		) );
+        if ( class_exists( 'VH_Admin_Manager' ) ) { VH_Admin_Manager::init(); }
+        if ( class_exists( 'VH_Notifications' ) ) { VH_Notifications::init(); }
+        if ( class_exists( 'VH_Google_Auth' ) ) { VH_Google_Auth::init(); }
+        if ( class_exists( 'VH_Payment' ) ) { VH_Payment::init(); }
+        if ( class_exists( 'VH_Email' ) ) { VH_Email::init(); }
 	}
 }
 

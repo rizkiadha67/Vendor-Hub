@@ -212,7 +212,10 @@ $banner_url   = get_template_directory_uri() . '/assets/images/banner1.png';
             </div>
             <div class="vh-stat-item">
                 <span class="dashicons dashicons-star-filled" style="color: #f59e0b;"></span>
-                4.9
+                <?php 
+                $avg = class_exists('VH_Rating') ? VH_Rating::get_average_rating($vendor->ID) : null;
+                echo $avg ?: '—';
+                ?>
             </div>
         </div>
         
